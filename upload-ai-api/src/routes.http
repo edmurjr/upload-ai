@@ -1,0 +1,37 @@
+# @name get-prompts
+GET http://localhost:3333/prompts
+
+###
+
+# @name upload
+POST http://localhost:3333/videos
+Content-Type: multipart/form-data; boundary=---upload---
+
+-----upload---
+Content-Disposition: form-data; name="file"; filename="example.mp3"
+Content-Type: audio/mpeg
+
+< ./../example.mp3
+-----upload-----
+
+###
+
+# @name create-transcription
+POST http://localhost:3333/videos/62b62de8-82fb-4d68-b4ee-c9ed6b8f6d4a/transcription
+Content-Type: application/json
+
+{
+  "prompt": "clean architecture, ddd"
+}
+
+###
+
+# @name genetare-ai-completion
+POST http://localhost:3333/ai/complete
+Content-Type: application/json
+
+{
+  "videoId": "62b62de8-82fb-4d68-b4ee-c9ed6b8f6d4a",
+  "temperature": 0.5,
+  "template": "Gere um resumo sucinto da transcrição do video informada a seguir: '''{transcription}'''"
+}
